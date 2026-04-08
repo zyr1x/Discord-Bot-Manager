@@ -1,0 +1,21 @@
+command:
+  descriptions:
+    ping: 'ping the bot'
+    clan-add: 'Добавить участника в клан'
+    clan-remove: 'Удалить участника из клана'
+    clan-roster: 'Отправить сообщение с составом клана'
+
+  messages:
+    clan-add-success: '✅ {user} добавлен в клан с ролью **{role}**'
+    clan-add-replace: '🔄 {user} — роль изменена на **{role}**'
+    clan-remove-success: '✅ {user} удалён из клана'
+    clan-remove-not-found: '❌ {user} не найден в составе клана'
+    clan-roster-set: '✅ Сообщение с составом установлено в этом канале'
+    clan-empty: 'Клан пуст 😔'
+
+  roster:
+    title: '⚔️ __**СОСТАВ КЛАНА**__ ⚔️'
+    role-header: '▸ **{role}**'
+    member-line: '  └ {user}'
+    separator: '┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄'
+    footer: '👥 Всего участников: **{count}**'
