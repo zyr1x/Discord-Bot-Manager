@@ -1,11 +1,13 @@
 package ru.lewis.botmanager.manager;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.stereotype.Component;
 import ru.lewis.botmanager.model.CommandExecutor;
 
+import java.lang.reflect.Member;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,6 +29,12 @@ public class CommandExecutorManager extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        if (event.getMember() == null ||
+                !event.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+            event.reply("You not admin").setEphemeral(true).queue();
+            return;
+        }
+
         CommandExecutor executor = executorMap.get(event.getName());
 
         if (executor == null) {
