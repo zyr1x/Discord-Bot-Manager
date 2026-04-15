@@ -3,6 +3,7 @@ package ru.lewis.botmanager.service;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.UserSnowflake;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.springframework.stereotype.Service;
 import ru.lewis.botmanager.configuration.CommandConfig;
@@ -34,19 +35,57 @@ public class RosterService {
         this.commandConfig = commandConfig;
     }
 
-    public void cleanup(Guild guild) {
+    public void cleanupAsync(Guild guild, Runnable onComplete) {
         ClanStorage storage = clanRepository.getStorage();
 
-        boolean changed = storage.getMembers().removeIf(member -> {
-            boolean noRole = guild.getRoleById(member.getRoleId()) == null;
-            boolean noUser = guild.getMemberById(member.getUserId()) == null;
+        List<ClanMember> members = new ArrayList<>(storage.getMembers());
+        List<ClanMember> toRemove = new ArrayList<>();
 
-            return noRole || noUser;
-        });
+        guild.getMemberById()
 
-        if (changed) {
+        if (members.isEmpty()) {
+            onComplete.run();
+            return;
+        }
+
+        final int[] remaining = {members.size()};
+
+        for (ClanMember member : members) {
+            Role role = guild.getRoleById(member.getRoleId());
+            if (role == null) {
+                toRemove.add(member);
+                if (--remaining[0] == 0) finishCleanup(storage, toRemove, onComplete);
+                continue;
+            }
+
+            guild.retrieveMemberById(member.getUserId()).queue(
+                    m -> {
+                        if (!m.getRoles().contains(role)) {
+                            toRemove.add(member);
+                        }
+
+                        if (--remaining[0] == 0) {
+                            finishCleanup(storage, toRemove, onComplete);
+                        }
+                    },
+                    error -> {
+                        toRemove.add(member);
+
+                        if (--remaining[0] == 0) {
+                            finishCleanup(storage, toRemove, onComplete);
+                        }
+                    }
+            );
+        }
+    }
+
+    private void finishCleanup(ClanStorage storage, List<ClanMember> toRemove, Runnable onComplete) {
+        if (!toRemove.isEmpty()) {
+            storage.getMembers().removeAll(toRemove);
             clanRepository.save();
         }
+
+        onComplete.run();
     }
 
     public void updateRosterMessage() {
@@ -55,19 +94,20 @@ public class RosterService {
 
         Guild guild = jda.getGuildById(jdaConfig.getGuildId());
         if (guild == null) return;
-        cleanup(guild);
 
         TextChannel channel = guild.getTextChannelById(storage.getRosterChannelId());
         if (channel == null) return;
 
-        String content = buildRosterContent(guild, storage);
+        cleanupAsync(guild, () -> {
+            String content = buildRosterContent(guild, storage);
 
-        channel.retrieveMessageById(storage.getRosterMessageId()).queue(
-                message -> message.editMessage(content).queue(),
-                error -> channel.sendMessage(content).queue(newMessage ->
-                        clanRepository.setRosterMessage(channel.getId(), newMessage.getId())
-                )
-        );
+            channel.retrieveMessageById(storage.getRosterMessageId()).queue(
+                    message -> message.editMessage(content).queue(),
+                    error -> channel.sendMessage(content).queue(newMessage ->
+                            clanRepository.setRosterMessage(channel.getId(), newMessage.getId())
+                    )
+            );
+        });
     }
 
     public String buildRosterContent(Guild guild, ClanStorage storage) {
