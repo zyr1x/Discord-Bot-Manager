@@ -1,6 +1,7 @@
 package ru.lewis.botmanager.listener;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.events.guild.GuildBanEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.stereotype.Component;

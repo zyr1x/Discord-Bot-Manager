@@ -34,12 +34,28 @@ public class RosterService {
         this.commandConfig = commandConfig;
     }
 
+    public void cleanup(Guild guild) {
+        ClanStorage storage = clanRepository.getStorage();
+
+        boolean changed = storage.getMembers().removeIf(member -> {
+            boolean noRole = guild.getRoleById(member.getRoleId()) == null;
+            boolean noUser = guild.getMemberById(member.getUserId()) == null;
+
+            return noRole || noUser;
+        });
+
+        if (changed) {
+            clanRepository.save();
+        }
+    }
+
     public void updateRosterMessage() {
         ClanStorage storage = clanRepository.getStorage();
         if (storage.getRosterMessageId() == null || storage.getRosterChannelId() == null) return;
 
         Guild guild = jda.getGuildById(jdaConfig.getGuildId());
         if (guild == null) return;
+        cleanup(guild);
 
         TextChannel channel = guild.getTextChannelById(storage.getRosterChannelId());
         if (channel == null) return;

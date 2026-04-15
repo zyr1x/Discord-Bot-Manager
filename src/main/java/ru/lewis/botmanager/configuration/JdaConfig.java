@@ -21,7 +21,7 @@ public class JdaConfig {
     public JDA jda() {
         try {
             return JDABuilder.createDefault(token)
-                    .enableIntents(GatewayIntent.MESSAGE_CONTENT)
+                    .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS)
                     .build()
                     .awaitReady();
         } catch (InterruptedException exception) {

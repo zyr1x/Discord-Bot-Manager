@@ -1,5 +1,6 @@
 package ru.lewis.botmanager.command;
 
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.springframework.stereotype.Component;
 import ru.lewis.botmanager.configuration.CommandConfig;
