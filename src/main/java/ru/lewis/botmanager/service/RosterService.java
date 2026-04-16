@@ -41,8 +41,6 @@ public class RosterService {
         List<ClanMember> members = new ArrayList<>(storage.getMembers());
         List<ClanMember> toRemove = new ArrayList<>();
 
-        guild.getMemberById()
-
         if (members.isEmpty()) {
             onComplete.run();
             return;
