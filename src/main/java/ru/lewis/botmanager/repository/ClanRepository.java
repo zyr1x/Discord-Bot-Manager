@@ -44,7 +44,29 @@ public class ClanRepository {
 
     public void addMember(String userId, String roleId) {
         storage.getMembers().removeIf(m -> m.getUserId().equals(userId));
-        storage.getMembers().add(new ClanMember(userId, roleId));
+        storage.getMembers().add(new ClanMember(userId, roleId, false, null));
+        save();
+    }
+
+    public void setAfk(String userId, String until) {
+        storage.getMembers().stream()
+                .filter(m -> m.getUserId().equals(userId))
+                .findFirst()
+                .ifPresent(m -> {
+                    m.setAfk(true);
+                    m.setAfkUntil(until);
+                });
+        save();
+    }
+
+    public void cancelAfk(String userId) {
+        storage.getMembers().stream()
+                .filter(m -> m.getUserId().equals(userId))
+                .findFirst()
+                .ifPresent(m -> {
+                    m.setAfk(false);
+                    m.setAfkUntil(null);
+                });
         save();
     }
 

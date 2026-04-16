@@ -4,6 +4,7 @@ command:
     clan-add: 'Добавить участника в клан'
     clan-remove: 'Удалить участника из клана'
     clan-roster: 'Отправить сообщение с составом клана'
+    afk: 'Установить панель АФК в канале'
 
   messages:
     clan-add-success: '✅ {user} добавлен в клан с ролью **{role}**'
@@ -12,8 +13,22 @@ command:
     clan-remove-not-found: '❌ {user} не найден в составе клана'
     clan-roster-set: '✅ Сообщение с составом установлено в этом канале'
     clan-empty: 'Клан пуст 😔'
+    afk-panel-set: '✅ Панель АФК установлена в этом канале'
+    afk-panel-text: '🌴 Уходишь в отпуск? Нажми кнопку ниже, чтобы отметиться как АФК'
+    afk-button-label: '🏖 Взять отпуск'
+    afk-modal-title: 'Отпуск'
+    afk-modal-input-label: 'До какого числа вы в АФК?'
+    afk-invalid-date: '❌ Неверный формат даты. Используйте дд.мм.гггг'
+    afk-date-in-past: '❌ Дата должна быть в будущем'
+    afk-not-in-clan: '❌ Вы не состоите в клане'
+    afk-success: '✅ Вы отмечены как АФК до **{date}** (МСК)'
+    afk-cancel-button-label: '❌ Отменить отпуск'
+    afk-cancelled: '✅ Отпуск отменён, вы снова активны'
+    afk-not-afk: '❌ Вы не находитесь в отпуске'
+    afk-modal-input-placeholder: 'дд.мм.гггг чч:мм'
 
   roster:
+    afk-suffix: '🌴 АФК до {date}'
     title: '⚔️ __**СОСТАВ КЛАНА**__ ⚔️'
     role-header: '▸ **{role}**'
     member-line: '  └ {user}'

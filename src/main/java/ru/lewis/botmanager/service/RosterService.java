@@ -131,7 +131,15 @@ public class RosterService {
         for (Map.Entry<String, List<String>> entry : byRole.entrySet()) {
             sb.append(cfg.getRoleHeader().replace("{role}", entry.getKey())).append("\n");
             for (String userId : entry.getValue()) {
-                sb.append(cfg.getMemberLine().replace("{user}", "<@" + userId + ">")).append("\n");
+                ClanMember cm = storage.getMembers().stream()
+                        .filter(m -> m.getUserId().equals(userId))
+                        .findFirst().orElseThrow();
+
+                String line = cfg.getMemberLine().replace("{user}", "<@" + userId + ">");
+                if (cm.isAfk()) {
+                    line += " " + cfg.getAfkSuffix().replace("{date}", cm.getAfkUntil());
+                }
+                sb.append(line).append("\n");
             }
             sb.append("\n");
         }

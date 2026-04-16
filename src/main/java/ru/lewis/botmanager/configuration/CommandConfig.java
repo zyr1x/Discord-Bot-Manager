@@ -21,6 +21,7 @@ public class CommandConfig {
         private String clanAdd;
         private String clanRemove;
         private String clanRoster;
+        private String afk;
     }
 
     @Getter
@@ -32,6 +33,19 @@ public class CommandConfig {
         private String clanRemoveNotFound;
         private String clanRosterSet;
         private String clanEmpty;
+        private String afkPanelSet;
+        private String afkPanelText;
+        private String afkButtonLabel;
+        private String afkModalTitle;
+        private String afkModalInputLabel;
+        private String afkModalInputPlaceholder;
+        private String afkInvalidDate;
+        private String afkDateInPast;
+        private String afkNotInClan;
+        private String afkSuccess;
+        private String afkCancelButtonLabel;
+        private String afkCancelled;
+        private String afkNotAfk;
     }
 
     @Getter
@@ -42,5 +56,6 @@ public class CommandConfig {
         private String memberLine;
         private String separator;
         private String footer;
+        private String afkSuffix;
     }
 }

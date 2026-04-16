@@ -10,4 +10,6 @@ import lombok.NoArgsConstructor;
 public class ClanMember {
     private String userId;
     private String roleId;
+    private boolean afk;
+    private String afkUntil;
 }
