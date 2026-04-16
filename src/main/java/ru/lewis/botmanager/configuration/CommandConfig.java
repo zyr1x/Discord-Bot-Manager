@@ -13,6 +13,23 @@ public class CommandConfig {
     private Descriptions descriptions;
     private Messages messages;
     private Roster roster;
+    private Embed embed;
+
+    @Getter
+    @Setter
+    public static class Embed {
+        private String selectPlaceholder;
+        private String nextButton;
+        private String modalTitle;
+
+        private String titleInput;
+        private String descInput;
+        private String colorInput;
+        private String imageInput;
+        private String footerInput;
+
+        private String defaultColor;
+    }
 
     @Getter
     @Setter
@@ -22,6 +39,7 @@ public class CommandConfig {
         private String clanRemove;
         private String clanRoster;
         private String afk;
+        private String embed;
     }
 
     @Getter
@@ -46,6 +64,7 @@ public class CommandConfig {
         private String afkCancelButtonLabel;
         private String afkCancelled;
         private String afkNotAfk;
+        private String embedRoleSelect;
     }
 
     @Getter

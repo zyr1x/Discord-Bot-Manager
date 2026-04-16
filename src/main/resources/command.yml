@@ -1,10 +1,24 @@
 command:
+  embed:
+    select-placeholder: "Выбери роли"
+    next-button: "Далее"
+    modal-title: "Создать Embed"
+
+    title-input: "Заголовок"
+    desc-input: "Описание"
+    color-input: "Цвет (#00FF00)"
+    image-input: "URL картинки"
+    footer-input: "Футер"
+
+    default-color: "#808080"
+
   descriptions:
     ping: 'ping the bot'
     clan-add: 'Добавить участника в клан'
     clan-remove: 'Удалить участника из клана'
     clan-roster: 'Отправить сообщение с составом клана'
     afk: 'Установить панель АФК в канале'
+    embed: 'Написать embed-сообщение'
 
   messages:
     clan-add-success: '✅ {user} добавлен в клан с ролью **{role}**'
@@ -26,6 +40,7 @@ command:
     afk-cancelled: '✅ Отпуск отменён, вы снова активны'
     afk-not-afk: '❌ Вы не находитесь в отпуске'
     afk-modal-input-placeholder: 'дд.мм.гггг чч:мм'
+    embed-role-select: "Выбери роли для пинга:"
 
   roster:
     afk-suffix: '🌴 АФК до {date}'
