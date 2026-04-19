@@ -3,3 +3,4 @@ spring:
     import:
       - classpath:config.yml
       - classpath:command.yml
+      - classpath:ticket.yml
