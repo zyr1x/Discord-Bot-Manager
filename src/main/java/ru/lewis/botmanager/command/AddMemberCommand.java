@@ -10,6 +10,7 @@ import ru.lewis.botmanager.configuration.CommandConfig;
 import ru.lewis.botmanager.model.CommandData;
 import ru.lewis.botmanager.model.CommandExecutor;
 import ru.lewis.botmanager.repository.ClanRepository;
+import ru.lewis.botmanager.service.LogService;
 import ru.lewis.botmanager.service.RosterService;
 import ru.lewis.botmanager.utils.MessageFormatter;
 
@@ -22,11 +23,13 @@ public class AddMemberCommand extends CommandExecutor {
     private final RosterService rosterService;
     private final CommandConfig commandConfig;
     private final MessageFormatter formatter;
+    private final LogService logService;
 
     public AddMemberCommand(CommandConfig config,
                             ClanRepository clanRepository,
                             RosterService rosterService,
-                            MessageFormatter formatter) {
+                            MessageFormatter formatter,
+                            LogService logService) {
         super(new CommandData(
                 "clan-add",
                 config.getDescriptions().getClanAdd(),
@@ -39,6 +42,7 @@ public class AddMemberCommand extends CommandExecutor {
         this.rosterService = rosterService;
         this.commandConfig = config;
         this.formatter = formatter;
+        this.logService = logService;
     }
 
     @Override
@@ -61,5 +65,12 @@ public class AddMemberCommand extends CommandExecutor {
                 "role", role.getName());
 
         event.reply(reply).setEphemeral(true).queue();
+
+        logService.log(
+                LogService.Type.CLAN_ADD,
+                event.getMember().getAsMention(),
+                member.getAsMention(),
+                "Роль: " + role.getName()
+        );
     }
 }

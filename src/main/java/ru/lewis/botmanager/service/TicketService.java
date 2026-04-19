@@ -51,11 +51,13 @@ public class TicketService extends ListenerAdapter {
     private final Map<String, String> openTickets = new ConcurrentHashMap<>();
 
     private final TicketConfig config;
+    private final LogService logService;
     private final ScheduledExecutorService scheduler =
             Executors.newSingleThreadScheduledExecutor();
 
-    public TicketService(JDA jda, TicketConfig config) {
+    public TicketService(JDA jda, TicketConfig config, LogService logService) {
         this.config = config;
+        this.logService = logService;
         jda.addEventListener(this);
     }
 
@@ -213,6 +215,9 @@ public class TicketService extends ListenerAdapter {
 
                     event.getHook().sendMessage("✅ Тикет создан: " + ticketChannel.getAsMention())
                             .queue();
+
+                    logService.log(LogService.Type.TICKET_OPEN,
+                            member.getAsMention(), null, "Канал: " + ticketChannel.getAsMention());
                 });
     }
 
@@ -242,6 +247,9 @@ public class TicketService extends ListenerAdapter {
         )).queue();
 
         event.getChannel().sendMessage(takenMsg).queue();
+
+        logService.log(LogService.Type.TICKET_TAKE,
+                event.getMember().getAsMention(), null, event.getChannel().getName());
     }
 
     // ─────────────────────────────────────────────
@@ -284,6 +292,9 @@ public class TicketService extends ListenerAdapter {
         )).queue();
 
         channel.sendMessage(closedMsg).queue();
+
+        logService.log(LogService.Type.TICKET_CLOSE,
+                event.getMember().getAsMention(), null, event.getChannel().getName());
     }
 
     // ─────────────────────────────────────────────
@@ -301,6 +312,9 @@ public class TicketService extends ListenerAdapter {
         TextChannel channel = event.getChannel().asTextChannel();
 
         event.reply(msg.getDeletingMessage()).queue();
+
+        logService.log(LogService.Type.TICKET_DELETE,
+                event.getMember().getAsMention(), null, channel.getName());
 
         // Убираем из openTickets
         openTickets.entrySet().removeIf(e -> e.getValue().equals(channel.getId()));

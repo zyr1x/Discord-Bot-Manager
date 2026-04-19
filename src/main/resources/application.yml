@@ -4,3 +4,4 @@ spring:
       - classpath:config.yml
       - classpath:command.yml
       - classpath:ticket.yml
+      - classpath:features.yml

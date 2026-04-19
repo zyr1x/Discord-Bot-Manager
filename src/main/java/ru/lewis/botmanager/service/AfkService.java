@@ -35,14 +35,17 @@ public class AfkService extends ListenerAdapter {
     private final ClanRepository clanRepository;
     private final RosterService  rosterService;
     private final CommandConfig  commandConfig;
+    private final LogService logService;
 
     public AfkService(JDA jda,
                       ClanRepository clanRepository,
                       RosterService rosterService,
-                      CommandConfig commandConfig) {
+                      CommandConfig commandConfig,
+                      LogService logService) {
         this.clanRepository = clanRepository;
         this.rosterService  = rosterService;
         this.commandConfig  = commandConfig;
+        this.logService = logService;
         jda.addEventListener(this);
     }
 
@@ -105,6 +108,7 @@ public class AfkService extends ListenerAdapter {
         }
 
         clanRepository.cancelAfk(userId);
+        logService.log(LogService.Type.AFK_CANCEL, "<@" + userId + ">", null, null);
         rosterService.updateRosterMessage();
 
         event.reply(msg.getAfkCancelled()).setEphemeral(true).queue();
@@ -142,6 +146,7 @@ public class AfkService extends ListenerAdapter {
         String formatted = until.format(FORMATTER);
 
         clanRepository.setAfk(userId, formatted);
+        logService.log(LogService.Type.AFK_SET, "<@" + userId + ">", null, "До: " + formatted);
         rosterService.updateRosterMessage();
 
         event.reply(msg.getAfkSuccess().replace("{date}", formatted))

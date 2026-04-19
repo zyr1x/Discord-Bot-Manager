@@ -1,0 +1,122 @@
+# ══════════════════════════════════════════════════════════
+#  📅  СИСТЕМА ИВЕНТОВ
+# ══════════════════════════════════════════════════════════
+event:
+  messages:
+
+    # --- Команда /event ---
+    command-description: "Создать ивент с записью участников"
+    name-option-description: "Название ивента"
+    desc-option-description: "Описание ивента (необязательно)"
+    time-option-description: "Время проведения в формате дд.мм.гггг чч:мм (МСК)"
+
+    # --- Embed ивента ---
+    embed-color: "#5865F2"
+    embed-footer: "📅 Кнопки работают для всех • Только создатель может завершить"
+    field-time: "⏰ Время"
+    field-description: "📋 Описание"
+    field-will-come: "✅ Приду"
+    field-wont-come: "❌ Не приду"
+    field-maybe: "🤔 Может быть"
+
+    # --- Кнопки ---
+    btn-will-come: "✅ Приду"
+    btn-wont-come: "❌ Не приду"
+    btn-maybe: "🤔 Может быть"
+    btn-finish: "🏁 Завершить ивент"
+
+    # --- Финальный embed ---
+    finish-embed-title: "🏁 Ивент завершён: {name}"
+    finish-embed-color: "#57F287"
+    finish-field-total: "👥 Всего ответов"
+    finish-field-attended: "Придут"
+    finish-field-declined: "Не придут"
+    finish-field-maybe: "Может быть"
+    finish-no-participants: "😔 Никто не зарегистрировался на ивент."
+
+    # --- Ошибки ---
+    error-only-creator: "❌ Завершить ивент может только его создатель или администратор."
+    error-invalid-time: "❌ Неверный формат времени. Используйте: **дд.мм.гггг чч:мм**"
+    error-time-in-past: "❌ Время ивента должно быть в будущем."
+
+
+# ══════════════════════════════════════════════════════════
+#  📋  СИСТЕМА ЛОГИРОВАНИЯ
+# ══════════════════════════════════════════════════════════
+log:
+  # Оставь пустым чтобы отключить логи. Заполняется через /log-channel
+  channel-id: ""
+
+  messages:
+
+    # --- Команда /log-channel ---
+    command-description: "Установить текущий канал как канал для логов бота"
+    set-success: "✅ Этот канал теперь используется для логов бота."
+
+    # --- Заголовки событий ---
+    title-clan-add:     "➕ Участник добавлен в клан"
+    title-clan-remove:  "➖ Участник удалён из клана"
+    title-ticket-open:  "🎫 Открыт новый тикет"
+    title-ticket-take:  "🔍 Тикет взят в работу"
+    title-ticket-close: "🔒 Тикет закрыт"
+    title-ticket-delete: "🗑️ Тикет удалён"
+    title-event-create: "📅 Создан ивент"
+    title-event-finish: "🏁 Ивент завершён"
+    title-reminder-set: "⏰ Установлено напоминание"
+    title-member-leave: "🚪 Участник покинул сервер"
+    title-afk-set:      "🌴 Участник ушёл в АФК"
+    title-afk-cancel:   "✅ АФК отменён"
+
+    # --- Поля embed'а ---
+    field-actor:   "👤 Кто"
+    field-target:  "🎯 Кому / Для кого"
+    field-channel: "💬 Канал"
+    field-detail:  "📝 Детали"
+
+    # --- Цвета по типу события ---
+    color-info:    "#5865F2"   # синий    — нейтральные
+    color-success: "#57F287"   # зелёный  — добавления
+    color-warning: "#FEE75C"   # жёлтый   — изменения / АФК
+    color-danger:  "#ED4245"   # красный  — удаления / уходы
+
+    # --- Footer ---
+    footer: "BotManager • Лог событий"
+
+
+# ══════════════════════════════════════════════════════════
+#  ⏰  СИСТЕМА НАПОМИНАНИЙ
+# ══════════════════════════════════════════════════════════
+reminder:
+  messages:
+
+    # --- Команды ---
+    command-description:         "Установить напоминание (пример: /remind 2h30m Встреча рейда)"
+    time-option-description:     "Через сколько напомнить: 30m, 2h, 1d, 1h30m, 2d5h30m"
+    text-option-description:     "Текст напоминания"
+    list-command-description:    "Показать список ваших активных напоминаний"
+    cancel-command-description:  "Отменить напоминание по ID"
+    id-option-description:       "ID напоминания (из /reminders)"
+
+    # --- Ответ при создании ---
+    set-success: "⏰ Окей! Напомню вам через **{time}**: *{text}*"
+
+    # --- Embed напоминания ---
+    embed-title:       "⏰ Напоминание!"
+    embed-color:       "#FEE75C"
+    embed-description: "{user}, вы просили напомнить:\n\n> **{text}**"
+    embed-footer:      "Установлено: {set_at}"
+
+    # --- Список напоминаний ---
+    list-title: "Ваши напоминания"
+    list-empty: "📭 У вас нет активных напоминаний."
+    list-entry: "⏰ `#{id}` — через **{time_left}**: {text}"
+
+    # --- Отмена ---
+    cancel-success:   "✅ Напоминание отменено."
+    cancel-not-found: "❌ Напоминание с таким ID не найдено."
+
+    # --- Ошибки ---
+    error-invalid-time: "❌ Неверный формат времени.\nПримеры: `30m`, `2h`, `1d`, `1h30m`, `2d5h30m`"
+    error-too-long:     "❌ Максимальное время — **30 дней**."
+    error-too-short:    "❌ Минимальное время — **1 минута**."
+    error-too-many:     "❌ У вас уже {max} активных напоминаний. Отмените старые через `/reminder-cancel`."

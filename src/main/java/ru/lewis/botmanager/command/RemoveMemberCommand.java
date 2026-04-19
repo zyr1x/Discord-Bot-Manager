@@ -9,6 +9,7 @@ import ru.lewis.botmanager.configuration.CommandConfig;
 import ru.lewis.botmanager.model.CommandData;
 import ru.lewis.botmanager.model.CommandExecutor;
 import ru.lewis.botmanager.repository.ClanRepository;
+import ru.lewis.botmanager.service.LogService;
 import ru.lewis.botmanager.service.RosterService;
 import ru.lewis.botmanager.utils.MessageFormatter;
 
@@ -21,11 +22,13 @@ public class RemoveMemberCommand extends CommandExecutor {
     private final RosterService rosterService;
     private final CommandConfig commandConfig;
     private final MessageFormatter formatter;
+    private final LogService logService;
 
     public RemoveMemberCommand(CommandConfig config,
                                ClanRepository clanRepository,
                                RosterService rosterService,
-                               MessageFormatter formatter) {
+                               MessageFormatter formatter,
+                               LogService logService) {
         super(new CommandData(
                 "clan-remove",
                 config.getDescriptions().getClanRemove(),
@@ -37,6 +40,7 @@ public class RemoveMemberCommand extends CommandExecutor {
         this.rosterService = rosterService;
         this.commandConfig = config;
         this.formatter = formatter;
+        this.logService = logService;
     }
 
     @Override
@@ -51,6 +55,13 @@ public class RemoveMemberCommand extends CommandExecutor {
             clanRepository.removeMember(member.getId());
             rosterService.updateRosterMessage();
             template = commandConfig.getMessages().getClanRemoveSuccess();
+
+            logService.log(
+                    LogService.Type.CLAN_REMOVE,
+                    event.getMember().getAsMention(),
+                    member.getAsMention(),
+                    null
+            );
         } else {
             template = commandConfig.getMessages().getClanRemoveNotFound();
         }
